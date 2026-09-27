@@ -1,14 +1,41 @@
 <!DOCTYPE html>
 <html>
-<head><title>TikTok Login Callback</title></head>
-<body style="font-family:sans-serif;max-width:700px;margin:40px auto;padding:20px">
-  <h1>Login successful</h1>
-  <p>Copy the <code>code</code> from this URL and paste it into the terminal:</p>
-  <p id="code" style="background:#f0f0f0;padding:15px;word-break:break-all;font-family:monospace"></p>
+<head>
+  <title>TikTok Login</title>
+  <style>
+    body { font-family: sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; }
+    h1 { color: #222; }
+    code { background: #f4f4f4; padding: 3px 6px; border-radius: 4px; }
+    #code {
+      background: #1a1a1a;
+      color: #00ff88;
+      padding: 20px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 14px;
+      word-break: break-all;
+      user-select: all;
+    }
+    .error { color: #c00; }
+  </style>
+</head>
+<body>
+  <h1>TikTok Login</h1>
+  <p id="msg">Copy the code below and paste it into the terminal:</p>
+  <div id="code">Loading...</div>
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get('code');
-    document.getElementById('code').textContent = code || 'No code found in URL';
+    const p = new URLSearchParams(window.location.search);
+    const code = p.get('code');
+    const err = p.get('error');
+    const el = document.getElementById('code');
+    if (err) {
+      document.getElementById('msg').innerHTML = '<span class="error">Error: ' + err + '</span>';
+      el.textContent = p.get('error_description') || 'See terminal for details';
+    } else if (code) {
+      el.textContent = code;
+    } else {
+      el.textContent = 'No code found in URL';
+    }
   </script>
 </body>
 </html>
